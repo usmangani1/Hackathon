@@ -1,0 +1,90 @@
+{
+  "locations" : [ {
+    "timestampMs" : "1497581694238",
+    "latitudeE7" : 129012849,
+    "longitudeE7" : 776030849,
+    "accuracy" : 77,
+    "activity" : [ {
+      "timestampMs" : "1497581670029",
+      "activity" : [ {
+        "type" : "UNKNOWN",
+        "confidence" : 44
+      }, {
+        "type" : "IN_VEHICLE",
+        "confidence" : 43
+      }, {
+        "type" : "ON_BICYCLE",
+        "confidence" : 8
+      }, {
+        "type" : "STILL",
+        "confidence" : 5
+      } ]
+    } ]
+  },
+ {
+    "timestampMs" : "1497581580697",
+    "latitudeE7" : 129007432,
+    "longitudeE7" : 776023960,
+    "accuracy" : 30
+  }, {
+    "timestampMs" : "1497581555992",
+    "latitudeE7" : 129006767,
+    "longitudeE7" : 776024046,
+    "accuracy" : 98
+  }, {
+    "timestampMs" : "1497581524826",
+    "latitudeE7" : 129006767,
+    "longitudeE7" : 776024046,
+    "accuracy" : 98,
+    "activity" : [ {
+      "timestampMs" : "1497581524694",
+      "activity" : [ {
+        "type" : "STILL",
+        "confidence" : 100
+      } ]
+    } ]
+  },
+ {
+    "timestampMs" : "1497581521323",
+    "latitudeE7" : 129006767,
+    "longitudeE7" : 776024046,
+    "accuracy" : 98
+  },
+ {
+    "timestampMs" : "1497581520995",
+    "latitudeE7" : 129006767,
+    "longitudeE7" : 776024046,
+    "accuracy" : 98
+  },
+{
+    "timestampMs" : "1497581487440",
+    "latitudeE7" : 129008510,
+    "longitudeE7" : 776024710,
+    "accuracy" : 24
+  },
+ {
+    "timestampMs" : "1497581397957",
+    "latitudeE7" : 129008510,
+    "longitudeE7" : 776024710,
+    "accuracy" : 24
+  },
+ {
+    "timestampMs" : "1497581213259",
+    "latitudeE7" : 129008510,
+    "longitudeE7" : 776024710,
+    "accuracy" : 24,
+    "activity" : [ {
+      "timestampMs" : "1497581213139",
+      "activity" : [ {
+        "type" : "STILL",
+        "confidence" : 100
+      } ]
+    } ]
+  },
+ {
+    "timestampMs" : "1497581209777",
+    "latitudeE7" : 129008510,
+    "longitudeE7" : 776024710,
+    "accuracy" : 24
+  } ]
+ }

@@ -7,11 +7,62 @@
     
   <script src="http://maps.google.com/maps/api/js?sensor=false" 
           type="text/javascript"></script>
+
+          <style>
+          div.relative {
+    position: absolute;
+    right: 20px;
+    width: 208px;
+    height: 800px;
+    
+    background-color: blue;
+}
+</style>
+
 </head> 
 <body>
 
+<div class="relative">
 
-  <div id="map" style="width: 1440px; height: 800px;"></div>
+<form method="post" action="selectsome.php">
+  <br>
+      <br>
+
+
+Enter the Starttime:
+     <input type="date" id="myDate" name="fromtime" value="2014-02-09" id="starttime">
+
+     <button onclick="myFunction()">Try it</button>
+      
+      <br>
+      <br>
+      Enter the Endtime:
+      <input type="date" id="myDate" name="totime" value="2014-02-09" id="endtime">
+
+      <button onclick="myFunction()">Try it</button>
+
+      <p id="demo"></p>
+
+<script>
+function myFunction() {
+    var x = document.getElementById("myDate").value;
+    document.getElementById("demo").innerHTML = x;
+}
+</script> 
+
+      <br>
+      <br>
+      <input type="submit" name="submit" value="PLOT ">
+      
+</form>
+</div>
+
+
+
+
+
+
+  <div id="map" style="width: 1200px; height: 800px;"></div>
 
   <script type="text/javascript">
 
@@ -66,13 +117,14 @@
                 });
 
                 
-                console.log(lat);
-                console.log(lon); 
+                
            
 for(var i=0; i<ts.length; i++){
 
                     timeStamp.push(new Date(ts[i]*1000/1000));
+                    
                 }
+
                 
     console.log(timeStamp);
    

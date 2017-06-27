@@ -1,21 +1,72 @@
-<html>
-<head>
-<title>Google Maps API v3 : Reverse Geocoding</title>
+<!DOCTYPE html>
+<html> 
+<head> 
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" /> 
+  <title>Google Maps Multiple Markers</title> 
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    
+  <script src="http://maps.google.com/maps/api/js?sensor=false" 
+          type="text/javascript"></script>
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6G-FrvMUhIV-UMRbSN9RkxYGRf4SO_Wg&callback=myMap"></script>
+          <style>
+          div.relative {
+    position: absolute;
+    right: 20px;
+    width: 208px;
+    height: 800px;
+    
+    background-color: blue;
+}
+</style>
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-<script type="text/javascript">
-
-var geocoder;
-var map;
-var infowindow = new google.maps.InfoWindow();
-var marker;
-
-var starttime = <?php echo json_encode($_POST["Timestamp"]); ?>;
+</head> 
 
 
-var timeStamp=[];
+<div class="relative">
+
+<form method="post" action="selectsome.php">
+  <br>
+      <br>
+
+
+Enter the Starttime:
+     <input type="date" id="myDate" name="fromtime" value="2014-02-09" id="starttime">
+
+     <button onclick="myFunction()">Try it</button>
+      
+      <br>
+      <br>
+      Enter the Endtime:
+      <input type="date" id="myDate" name="totime" value="2014-02-09" id="endtime">
+
+      <button onclick="myFunction()">Try it</button>
+
+      <p id="demo"></p>
+
+<script>
+function myFunction() {
+    var x = document.getElementById("myDate").value;
+    document.getElementById("demo").innerHTML = x;
+}
+</script> 
+
+      <br>
+      <br>
+      <input type="submit" name="submit" value="PLOT ">
+      
+</form>
+</div>
+
+
+
+
+
+
+  <div id="map" style="width: 1200px; height: 800px;"></div>
+
+  <script type="text/javascript">
+
+  var timeStamp=[];
         var ts=[];
         var lat=[];
         var lon=[];
@@ -27,10 +78,6 @@ var timeStamp=[];
         var minutes=[];
         var seconds=[];
         var day=[];
-        var lattitude;
-        var longitude;
-        var index;
-        var found=0;
 
         
         var data;
@@ -68,49 +115,22 @@ var timeStamp=[];
                         //}
                     });
                 });
-         
+
+                
+                
+           
 for(var i=0; i<ts.length; i++){
 
                     timeStamp.push(new Date(ts[i]*1000/1000));
                     
                 }
-                console.log(timeStamp);
-                console.log(starttime);
-
-   for(var i=0;i<timeStamp.length;i++)
-{
-   
-	if(starttime==timeStamp[i])
-	{
-
-		lattitude=lat[i];
-		longitude=lon[i];
-		found=1;
-	}
-	
-}
-if (found==0)
-	{
-		alert("WE ARE SO SORRY TO LET YOU KNOW THAT THE DATA YOU ENTERED DOSENT EXISTS IN OUR RECORDS");
-			}
-
-console.log(index);
-console.log(lattitude);
-console.log(longitude);
-    });
-
-
-
-
-
-
 function initialize()
 {
     geocoder = new google.maps.Geocoder();
     map = new google.maps.Map(document.getElementById("map"),
     {
         zoom: 8,
-        center: new google.maps.LatLng(lattitude,longitude),
+        center: new google.maps.LatLng(22.7964,79.5410),
         mapTypeId: google.maps.MapTypeId.ROADMAP
     });
 }
@@ -121,7 +141,7 @@ function codeLatLng()
     var latlngStr = input.split(",",2);
     var lat = parseFloat(latlngStr[0]);
     var lng = parseFloat(latlngStr[1]);
-    var latlng = new google.maps.LatLng(lattitude, longitude);
+    var latlng = new google.maps.LatLng(lat, lng);
     geocoder.geocode({'latLng': latlng}, function(results, status)
     {
         if (status == google.maps.GeocoderStatus.OK)
@@ -135,7 +155,6 @@ function codeLatLng()
                     map: map
                 });
                 infowindow.setContent(results[0].formatted_address);
-
                 infowindow.open(map, marker);
             }
             else
@@ -149,18 +168,16 @@ function codeLatLng()
         }
     });
 }
-</script>
-</head>
+                
+    
+ });
+  </script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6G-FrvMUhIV-UMRbSN9RkxYGRf4SO_Wg&callback=myMap"></script>
 <body onload="initialize()">
-<div align="center" style="height: 30px; width: 430px background-color:#4CAF50";>
-<input id="latlng" type="text" value="lattitude,longitude">
-<input type="button" value="GET LOCATION INFORMATION" onclick="codeLatLng()">
+<div align="center" style="height: 30px; width: 430px">
+<input id="latlng" type="text" value="27.1900,78.0100">
+<input type="button" value="Reverse Geocode" onclick="codeLatLng()">
 </div>
-<div id="map" style="height: 600px; width: 1200px"></div>
-<form method="post" action="googlemapphpwithoutcalender.php">
-<input type="submit" name="submit" value="GO BACK AND TRY ANOTHER ">
-
-
-</form>
+<div id="map" style="height: 200px; width: 430px"></div>
 </body>
 </html>

@@ -9,13 +9,52 @@
           type="text/javascript"></script>
 
           <style>
-          div.relative {
+    .button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+    div.relative {
     position: absolute;
-    right: 20px;
-    width: 208px;
-    height: 800px;
+    left: 0px;
+    width: 238px;
+    height: 240px;
     
-    background-color: blue;
+    background-color: #87CEFA;
+}
+div.new {
+    position: absolute;
+    left: 0px;
+    top:250px;
+    width: 238px;
+    height: 200px;
+    
+    background-color: #90EE90;
+}
+div.old {
+    position: absolute;
+    left: 0px;
+    top:455px;
+    width: 238px;
+    height: 150px;
+    
+    background-color: #FFD700;
+}
+div.home {
+    position: absolute;
+    left: 0px;
+    top:610px;
+    width: 238px;
+    height: 200px;
+    
+    background-color: #C71585;
 }
 </style>
 
@@ -27,15 +66,13 @@
 <form method="post" action="selectsome.php">
   <br>
       <br>
-
-
+ENTER AND PLOT
+<br>
+      <br>
       
       Enter the Starttime:
     
      <input type="text" name="fromtime" id="starttime">
-      <br>
-      
-      
       <br>
       <br>
       Enter the Endtime:
@@ -44,17 +81,63 @@
 
       <br>
       <br>
-      <input type="submit" name="submit" value="PLOT ">
+      <input type="SUBMIT" class="button"  value="PLOT ">
       
+</form>
+</div>
+
+<div class="new">
+
+<form method="post" action="geocoding.php">
+      <br>
+      <br>
+      GET THE ADDRESS
+      <br>
+      <br>
+
+      Enter the Timestamp:
+    
+     <input type="text" name="Timestamp" id="starttime">
+      <br>
+      
+      <br>
+      <input type="SUBMIT" class="button"  value="GET LOCATION INFO ">
+      
+</form>
+</div>
+
+<div class="old">
+<form method="post" action="mostvisitedplace.php">
+<br>
+      <br>
+      
+<input type="SUBMIT" class="button" value="MOST VISITED PLACE">
+
+</form>
+</div>
+<div class="home">
+<form method="post" action="newpath.php">
+<br>
+      
+    FROM TIME:
+    <br>
+<input type="text" name="fromtime1" >
+      <br>
+      <br>
+      TO TIME:
+      <br>
+<input type="text" name="endtime1" >
+<br>
+      <br>
+<input type="SUBMIT" class="button" value="GET PATHTRAVELLED">
+</div>
+
 </form>
 </div>
 
 
 
-
-
-
-  <div id="map" style="width: 1200px; height: 800px;"></div>
+  <div id="map" style="width: 1200px; height: 800px;left:230px"></div>
 
   <script type="text/javascript">
 
@@ -63,6 +146,7 @@
         var lat=[];
         var lon=[];
         var accur=[];
+
         var date=[];
         var activity_type=[];
         var flag=0;
@@ -70,6 +154,9 @@
         var minutes=[];
         var seconds=[];
         var day=[];
+        var lattituderecovered;
+        var longituderecovered;
+
 
         
         var data;
@@ -114,11 +201,15 @@
 for(var i=0; i<ts.length; i++){
 
                     timeStamp.push(new Date(ts[i]*1000/1000));
+                    date.push(new Date(timeStamp[i]));
                     
                 }
-
+                console.log(timeStamp);
                 
-    console.log(timeStamp);
+
+
+
+  
    
     var map = new google.maps.Map(document.getElementById('map'), {
       zoom: 9,
@@ -155,6 +246,7 @@ for(var i=0; i<ts.length; i++){
 });
  }
  });
+
   </script>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6G-FrvMUhIV-UMRbSN9RkxYGRf4SO_Wg&callback=myMap"></script>
 </body>

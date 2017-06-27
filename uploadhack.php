@@ -18,89 +18,37 @@ if(isset($_POST['btn-upload']))
           }
 
 
-
-//if ($_FILES["file"]["size"] > 8388608)
-// {
- //   echo "Sorry, your file is too large.";
- //   $upload = 0;
-//}
 $name= "location";
   move_uploaded_file($_FILES["file"]["tmp_name"], "/Applications/XAMPP/xamppfiles/htdocs/hackathonnew/" . $name.".".$file_type);
 }
 ?>
 <html>
-<head>
-<title> Filters </title>
-<style>
-.button {
-    background-color: #39906F;
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-	border-radius: 12px;
-}
-.heading-main {
-	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-	font-style: italic;
-	color: #000;
-	font-weight: bold;
-}
-</style>
-<style>
-ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    width: 200px;
-    background-color: #009999;
-}
 
-li a {
-    display: block;
-    color: #ffffff;
-    padding: 8px 16px;
-    text-decoration: none;
-}
+    <body>
+        <center>
+    <link rel="stylesheet" type="text/css" href="hisstyle.php">
+    <form method="post" action="googlemapphpwithoutcalender.php">
+    <body>  
+            <h1>PLOT AND QUERY</h1>
+            <div class="login-box animated fadeInUp">
+            <div class="box-header">
+                
+                <h2> File sucessfully uploaded </h2>
+            </div>
+            
+            <br>
+            <input type="submit" name="moveFile" value="PLOT DATA FROM FILE">
+            <br>
+            </form>
+            <br/>
 
-/* Change the link color on hover */
-li a:hover {
-    background-color: #555;
-    color: white;
-}
-</style>
-<script>
-	function viewMapMarkers(){
-		console.log("hello");
-		}
-</script>
-<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css">
-	<link rel="stylesheet" type="text/css" href="style.css">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-</head>
-<body>
-<nav>
-		<div class="nav-wrapper">
-			<a href="#" class="brand-logo">Please Select a Filter</a>
-		</div>
-	</nav>
-<p>
-<div class="navigationbar">
- <ul>
-    <li><a href="http://localhost:8080/Apps/html/hack/MapMarker.html"> mapMarkers</a></li>
-    <li><a href="http://localhost:8080/Apps/html/hack/viewPerson.html">ViewPerson</a></li>
-    <li> <a href="http://localhost:8080/Apps/html/hack/mapMarkerInfo.html">MapMarkerInfo</a></li>
-	<li><a href="http://localhost:8080/Apps/html/hack/chooseMarkers.html">ChooseMarker(Date)</a></li>
-  </ul>
-
-
-</div>
+    <br/>
+            
 </body>
+
+</form>
+</center>
+
 </html>
+
+<body>

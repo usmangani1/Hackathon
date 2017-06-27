@@ -22,35 +22,17 @@
 </head> 
 <body>
 
-<div class="relative">
-
-<form method="post" action="selectsome.php">
-  <br>
-      <br>
-Enter the Starttime:
-<input type="text" name="fromtime" id="startDate">
-      
-      <br>
-      <br>
-      Enter the Endtime:
-      <input type="text" name="totime" id="endDate">
-      
-      <br>
-      <br>
-      <button id="btn-click" onclick="myFunction()">Click Here</button>
-</form>
-</div>
 
 
-
-
-
-
-  <div id="map" style="width: 1200px; height: 800px;"></div>
+  <div id="map" style="width: 1200px; height: 700px;"></div>
 
   <script type="text/javascript">
   
-  var nameValue = document.getElementById("startDate").value;
+   var starttime = <?php echo json_encode($_POST["fromtime"]); ?>;
+   var endtime =<?php echo json_encode($_POST["totime"]); ?>;
+
+   console.log(starttime);
+   console.log(endtime);
 
 
   var timeStamp=[];
@@ -62,17 +44,19 @@ Enter the Starttime:
         var activity_type=[];
         var flag=0;
         var month=[];
-        var minutes=[];
-        var seconds=[];
+        var year=[];
+        var formattedTime;
         var day=[];
         var data;
 
-        console.log(nameValue);
-    
-    
-    
-    
-            //JSON INPUT//
+        var index1;
+        var index2;
+
+        var reqlat=[];
+        var reqlon=[];
+        var reqaccur=[];
+
+              //JSON INPUT//
             $.getJSON('location.json', function(data) {
                 //PARSING JSON INPUT//
                 $.each(data, function(idx, obj){ 
@@ -112,13 +96,37 @@ Enter the Starttime:
 for(var i=0; i<ts.length; i++){
 
                     timeStamp.push(new Date(ts[i]*1000/1000));
-                }
-                
-    console.log(timeStamp);
+                    }
+    
+
+for (i = 0; i < lat.length; i++) 
+{
+  
+if(starttime==timeStamp[i])
+{ 
+index1=i;
+}
+if(endtime==timeStamp[i])
+{ 
+index2=i;
+}
+}
+for( var i=index1;i<index2;i++)
+{
+
+    reqlat.push(lat[i]);
+    reqlon.push(lon[i]);
+    reqaccur.push(accur[i]);
+}
+console.log(reqlat);
+console.log(reqlon);
+
+
+
    
     var map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 9,
-      center: new google.maps.LatLng(12.5663704, 78.7037729),
+      zoom: 15,
+      center: new google.maps.LatLng(lat[0], lon[0]),
       mapTypeId: google.maps.MapTypeId.ROADMAP
     });
 
@@ -126,23 +134,23 @@ for(var i=0; i<ts.length; i++){
 
     var marker, i;
 
-    for (i = 0; i < lat.length; i++) {  
+    for (i = 0; i < reqlat.length; i++) {  
       marker = new google.maps.Marker({
-        position: new google.maps.LatLng(lat[i], lon[i]),
+        position: new google.maps.LatLng(reqlat[i], reqlon[i]),
         map: map
       });
 
       google.maps.event.addListener(marker, 'click', (function(marker, i) {
         return function() {
           infowindow.setContent(activity_type[i]);
-          infowindow.setContent(accur[i]);
+          infowindow.setContent(reqaccur[i]);
           infowindow.open(map, marker);
         }
       })(marker, i));
     
      
      var line = new google.maps.Polyline({
-    path: [new google.maps.LatLng(lat[i], lon[i]), new google.maps.LatLng(lat[i+1],lon[i+1])],
+    path: [new google.maps.LatLng(reqlat[i], reqlon[i]), new google.maps.LatLng(reqlat[i+1],reqlon[i+1])],
     strokeColor: "#FF0000",
     strokeOpacity: 1.0,
     strokeWeight: 10,
@@ -150,8 +158,14 @@ for(var i=0; i<ts.length; i++){
     map: map
 });
  }
+
  });
   </script>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6G-FrvMUhIV-UMRbSN9RkxYGRf4SO_Wg&callback=myMap"></script>
+  <form method="post" action="googlemapphpwithoutcalender.php">
+<input type="submit" name="submit" value="GO BACK AND TRY ANOTHER ">
+
+
+</form>
 </body>
 </html>
