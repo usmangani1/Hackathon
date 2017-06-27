@@ -1,187 +1,146 @@
-
 <!DOCTYPE html>
-<html> 
-<head> 
-  <meta http-equiv="content-type" content="text/html; charset=UTF-8" /> 
-  <title>Google Maps Multiple Markers</title> 
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<html>
+<head>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+ <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6G-FrvMUhIV-UMRbSN9RkxYGRf4SO_Wg&callback=myMap"></script>
+<script type="text/javascript">
+
+        var starttime = <?php echo json_encode($_POST["fromtime1"]); ?>;
+        var endtime =<?php echo json_encode($_POST["endtime1"]); ?>;
+
+
+        console.log(starttime);
+        console.log(endtime);
+        var timeStamp=[];
+        var ts=[];
+        var lat=[];
+        var lon=[];
+        var accur=[];
+
+        var date=[];
+        var activity_type=[];
+        var flag=0;
+        var month=[];
+        var minutes=[];
+        var seconds=[];
+        var day=[];
+        
+        var startlan;
+        var startlon;
+        var endlat;
+        var endlon;
+
+
+        
+        var data;
     
-  <script src="http://maps.google.com/maps/api/js?sensor=false" 
-          type="text/javascript"></script>
+            //JSON INPUT//
+            $.getJSON('location.json', function(data) {
+                //PARSING JSON INPUT//
+                $.each(data, function(idx, obj){ 
+                    $.each(obj , function(key , value){ 
+                        //if(key == "FORWARD_4D_MODEL"){
+                            $.each(value , function(key1 , value1){
+                                //$.each(value1 , function(key2 , value2){
+                                    if(key1 == "timestampMs"){
+                                        ts.push(value1);
+                                    }
+                                    else if(key1 == "latitudeE7"){
+                                        lat.push(value1/10000000);
+                                    }
+                                    else if(key1 == "longitudeE7"){
+                                        lon.push(value1/10000000);
+                                    }
+                                    else if(key1 == "accuracy"){
+                                        accur.push(value1/10000000);
+                                    }
+                                    if(key1 == "activity"){
+                                        flag=1;
+                                        activity_type.push(value1[0].activity[0].type);
+                                    }
+                                    if(flag==0){
+                                        activity_type.push("STILL");
+                                    }
+                                    flag=0;
+                                //})
+                            })                  
+                        //}
+                    });
+                });
 
-          <style>
-   div.relative {
-    position: absolute;
-    right: 20px;
-    width: 208px;
-    height: 800px;
-    
-    background-color: blue;
-}
-html, body {
-    height: 100%;
-    margin: 0px;
-    padding: 0px;
-    width: 100%;
-}
-#map-canvas {
-    height: 100%;
-    width: 100%;
-}
-#directions-panel {
-    width: 100%;
-    height: 100%;
-    position: relative;
-}
-table, tbody, tr {
-    width: 100%;
-    height: 100%;
-}
-td {
-    width: 50%;
-    height: 100%;
-}
-}
-</style>
+                
+                
+           
+for(var i=0; i<ts.length; i++){
 
-</head> 
-<body>
+                    timeStamp.push(new Date(ts[i]*1000/1000));
+                    date.push(new Date(timeStamp[i]));
+                    
+                }
+                console.log(timeStamp);
 
-  <div id="map-canvas" style="width: 1200px; height: 700px;"></div>
+for ( var i = 0; i < timeStamp.length; i++) 
+{
+  
+if(starttime==timeStamp[i])
+{ 
+startlan=lat[i];
+startlon=lon[i];
+}
+if(endtime==timeStamp[i])
+{ 
+endlat=lat[i];
+endlon=lon[i];
+}
+}
+console.log(startlan);
+console.log(startlon);
+console.log(endlat);
+console.log(endlon);
+           
+
+           
 
 
-  <script type="text/javascript">
- function calculate() {
-    var request = {
-        origin: origin,
-        waypoints: waypts,
-        destination: destination,
-        travelMode: google.maps.TravelMode.DRIVING
-    };
-    directionsDisplay.setPanel(document.getElementById('directions-panel'));
-    directionsService.route(request, function (response, status) {
-        if (status == google.maps.DirectionsStatus.OK) {
-            directionsDisplay.setDirections(response);
-        }
-    });
-}
 
-// global variables
-var origin = null;
-var destination = null;
-var waypts = [];
-var infowindow = new google.maps.InfoWindow();
-var directionsDisplay = new google.maps.DirectionsRenderer();
-var directionsService = new google.maps.DirectionsService();
-var features_added = 0;
 
-function initialize() {
-    // Create a simple map.
-    features = [];
-    map = new google.maps.Map(document.getElementById('map-canvas'), {
-        zoom: 4,
-        center: {
-            lat: -28,
-            lng: 137.883
-        }
-    });
+  var directionDisplay;
+  var directionsService = new google.maps.DirectionsService();
+  var map;
+
+  function initialize() {
+    directionsDisplay = new google.maps.DirectionsRenderer();
+    var myOptions = {
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+    }
+    map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
     directionsDisplay.setMap(map);
-    directionsDisplay.setPanel(document.getElementById('directions-panel'));
-    google.maps.event.addListener(map, 'click', function () {
-        infowindow.close();
-    });
-    // process the loaded GeoJSON data.
-    google.maps.event.addListener(map.data, 'addfeature', function (e) {
-        if (e.feature.getGeometry().getType() === 'Point') {
-features_added++;            map.setCenter(e.feature.getGeometry().get());
-            // set the origin to the first point
-            if (!origin) origin = e.feature.getGeometry().get();
-            // set the destination to the second point
-            else waypts.push({
-                location: e.feature.getGeometry().get(),
-                stopover: true
-            });
-            setTimeout(function() {features_added--; if (features_added <= 0) google.maps.event.trigger(map, 'data_idle');
-                }, 500);
-        }
-    });
-    google.maps.event.addListenerOnce(map, 'data_idle', function () {
-        if (!destination) {
-            destination = waypts.pop();
-            destination = destination.location;
-            // calculate the directions once both origin and destination are set 
-            calculate();
-        }
-    });
-    map.data.addGeoJson(data);
-}
 
-google.maps.event.addDomListener(window, 'load', initialize);
-var data = {
-    "type": "FeatureCollection",
-        "features": [{
-        "type": "Feature",
-            "geometry": {
-            "type": "Point",
-                "coordinates": [-73.563032, 45.495403]
-        },
-            "properties": {
-            "prop0": "value0"
-        }
-    }, {
-        "type": "Feature",
-            "geometry": {
-            "type": "Point",
-                "coordinates": [-73.549762, 45.559673]
-        },
-            "properties": {
-            "prop0": "value1"
-        }
-    }, {
-        "type": "Feature",
-            "geometry": {
-            "type": "Point",
-                "coordinates": [-73.9395687, 42.8142432] // Schenectady, NY
-        },
-            "properties": {
-            "prop0": "value2"
-        }
-    }, {
-        "type": "Feature",
-            "geometry": {
-            "type": "Point",
-                "coordinates": [-73.7562317, 42.6525793] // Albany, NY
-        },
-            "properties": {
-            "prop0": "value3"
-        }
-    }, {
-        "type": "Feature",
-            "geometry": {
-            "type": "Point",
-                "coordinates": [-74.005941, 40.712784] // New York, NY
-        },
-            "properties": {
-            "prop0": "value0"
-        }
-    }, {
-        "type": "Feature",
-            "geometry": {
-            "type": "Point",
-                "coordinates": [-74.1723667, 40.735657] // Newark, NJ
-        },
-            "properties": {
-            "prop0": "value0"
-        }
-    }]
-};
-
+    var start = new google.maps.LatLng(startlan,startlon);
+    var end = new google.maps.LatLng(endlat,endlon);
+    var request = {
+      origin:start, 
+      destination:end,
+      travelMode: google.maps.DirectionsTravelMode.DRIVING
+    };
+    directionsService.route(request, function(response, status) {
+      if (status == google.maps.DirectionsStatus.OK) {
+        directionsDisplay.setDirections(response);
+        var myRoute = response.routes[0];
+        
+        
+      }
+    });
+  }
+  google.maps.event.addDomListener(window, "load", initialize);
+   });
 </script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6G-FrvMUhIV-UMRbSN9RkxYGRf4SO_Wg&callback=myMap"></script>
-  <form method="post" action="googlemapphpwithoutcalender.php">
-<input type="submit" name="submit" value="GO BACK AND TRY ANOTHER ">
+</head>
 
-
-</form>
+<div id="map_canvas" style="width:500px;height:500px;"></div>
 </body>
 </html>
